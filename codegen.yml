@@ -1,0 +1,18 @@
+schema: input-schema.graphql
+overwrite: true
+generates:
+  ./output.ts:
+      - plugin.js:
+        # Mongoose schema names
+        schemaNameTemplate: "{{name}}Schema"
+        # Typescript type names
+        tsNameTemplate: "I{{name}}Model"
+        # Model names
+        modelNameTemplate: "{{name}}"
+  ./types.d.ts:
+    plugins:
+      - typescript-common
+      - typescript-server
+  schema.graphql:
+    plugins:
+      - schema-ast

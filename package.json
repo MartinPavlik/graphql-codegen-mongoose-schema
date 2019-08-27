@@ -1,0 +1,30 @@
+{
+  "name": "graphql-codegen-mongoose-schema",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:MartinPavlik/graphql-codegen-mongoose-schema.git",
+  "author": "MartinPavlik <martin.pavlik100@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "generate": "gql-gen",
+    "compile": "tsc plugin.ts"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.0.7",
+    "@types/mongodb": "^3.1.22",
+    "@types/mongoose": "^5.3.22",
+    "@types/node": "^11.11.1",
+    "graphql": "^14.1.1",
+    "graphql-code-generator": "^0.18.0",
+    "graphql-codegen-typescript-common": "^0.18.0",
+    "graphql-codegen-typescript-server": "^0.18.0",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "graphql-codegen-core": "^0.18.0",
+    "graphql-codegen-schema-ast": "^0.18.0",
+    "handlebars": "^4.1.0",
+    "mongoose": "^5.4.19"
+  }
+}
