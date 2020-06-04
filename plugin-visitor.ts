@@ -67,10 +67,7 @@ const skipTypes = ['Query', 'Mutation', 'Subscription'];
 type EnumTypeDefinitionTransformed = string;
 
 const run = (/*schema, documents, config*/) => {
-  // const printedSchema = printSchemaWithDirectives(schema); // Returns a string representation of the schema
   const printedSchema = fs.readFileSync('./input-schema-mtg.graphql', { encoding: 'utf8' });
-
-  console.log('printed schema:', printedSchema);
 
   const astNode = parse(printedSchema); // Transforms the string into ASTNode
 
@@ -79,6 +76,7 @@ const run = (/*schema, documents, config*/) => {
     astRoot: astNode,
     config: { ...defaultConfig }
   }
+
   // Use AST visualiser to see the graph
   // https://astexplorer.net/
 
@@ -119,14 +117,8 @@ const run = (/*schema, documents, config*/) => {
         // "node.fields" is an array of strings, because we transformed it using "FieldDefinition".
         const mongooseSchema = createMongooseSchemaDefinition(context)(node);
         const schemaVariableName = createSchemaName(context)(node.name.value);
-
-
-        console.log('node name:', node.name.value);
-
         const entityDirective = getDirective<EntityDirective>(ENTITY_DIRECTIVE_KEY, node);
         let modelDefinition = '';
-
-        console.log('entityDirective::', entityDirective);
 
         if (entityDirective) {
           const entityName = entityDirective.name ? entityDirective.name.value : node.name.value;
@@ -138,11 +130,6 @@ const run = (/*schema, documents, config*/) => {
         }
 
         const tsDef = printTsType(context)(node);
-
-        console.log('entityDirective::', entityDirective);
-
-        console.log('\n\n\nts type printed::', tsDef, '\n\n------------\n');
-
 
         return [mongooseSchema, modelDefinition, tsDef].join('\n');
       }
@@ -163,9 +150,9 @@ const run = (/*schema, documents, config*/) => {
     result.definitions.join('\n'),
   ].join('\n');
 
-  fs.writeFileSync('./output-visitor.ts', output, { encoding: 'utf8' });
+  fs.writeFileSync('./generated-code.ts', output, { encoding: 'utf8' });
 
-  console.log('Output is written to file output-visitor.ts');
+  console.log('Output is written to file generated-code.ts');
 };
 
 run();

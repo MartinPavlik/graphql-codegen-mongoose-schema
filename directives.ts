@@ -97,8 +97,8 @@ export const getDirective = <D>(key: string, node: ObjectTypeDefinitionNode | Fi
   const directive = (node.directives || []).find(d => d.name.value === key);
 
   if (directive && directive.arguments) {
-    // TODO - simplifyArguments does not return D
-    const res = simplifyArguments(directive.arguments)
+    // TODO - simplifyArguments does not return D !!!!!!!!!
+    const res = simplifyArguments(directive.arguments) as Maybe<D>
     return res;
   }
 

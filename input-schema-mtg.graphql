@@ -1,0 +1,202 @@
+directive @references(entity: String!, fieldName: String) on FIELD_DEFINITION
+
+directive @entity(name: String) on OBJECT
+
+directive @ignore on FIELD_DEFINITION
+
+directive @default(
+  numberValue: Float
+  stringValue: String
+) on ENUM_VALUE | FIELD_DEFINITION
+
+directive @private on FIELD_DEFINITION
+
+directive @noSelect on FIELD_DEFINITION
+
+type CardDataFace {
+  artist: String
+  colorIndicator: [String!]
+  colors: [String!]
+  flavorText: String
+  illustrationId: String
+  imageUris: CardDataImageUris
+  loyalty: String
+  manaCost: String! @default(stringValue: "")
+  name: String!
+  oracleText: String
+  power: String
+  printedName: String
+  printedText: String
+  printedTypeLine: String
+  toughness: String
+  typeLine: String
+  watermark: String
+}
+
+type CardDataImageUris {
+  small: String
+  normal: String
+  large: String
+  png: String
+  artCrop: String
+  borderCrop: String
+}
+
+type CardDataLegalities {
+  standard: String
+  future: String
+  frontier: String
+  modern: String
+  legacy: String
+  pauper: String
+  vintage: String
+  penny: String
+  commander: String
+  duel: String
+  brawl: String
+}
+
+type CardData @entity {
+  _id: String!
+
+  cardTypes: [String!]!
+  subTypes: [String!]!
+  superType: String
+  scryfallId: String
+
+  lang: String!
+  mtgoId: Int
+  mtgoFoilId: Int
+  multiverseIds: [Int]
+  tcgplayerId: Int
+  oracleId: String!
+  printsSearchUri: String!
+  rulingsUri: String!
+  scryfallUri: String!
+  uri: String!
+
+  cardFaces: [CardDataFace!]
+  cmc: Int!
+  colors: [String!]
+  colorIdentity: [String!]!
+  colorIndicator: [String!]
+  edhrecRank: Int
+  foil: Boolean!
+  handModifier: String
+  layout: String!
+  legalities: CardDataLegalities!
+  lifeModifier: String
+  loyalty: String
+  manaCost: String! @default(stringValue: "")
+  name: String!
+  nonfoil: Boolean!
+  oracleText: String
+  oversized: Boolean!
+  power: String
+  reserved: Boolean!
+  toughness: String
+  typeLine: String!
+
+  artist: String
+  borderColor: String!
+  collectorNumber: String!
+  digital: Boolean!
+  flavorText: String
+  frameEffect: String
+  frame: String!
+  fullArt: Boolean!
+  games: [String!]!
+  highresImage: Boolean!
+  illustrationId: String
+  imageUris: CardDataImageUris
+  promo: Boolean!
+  rarity: String!
+  releasedAt: String!
+  reprint: Boolean!
+  scryfallSetUri: String!
+  setName: String!
+  setSearchUri: String!
+  setUri: String!
+  set: String!
+  storySpotlight: String!
+  watermark: String
+}
+
+type User @entity {
+  _id: String!
+  username: String!
+  password: String! @noSelect @private
+}
+
+enum DeckSharingPolicy {
+  PRIVATE @default
+  UNLISTED
+  PUBLIC
+}
+
+input CardEdgeInput {
+  cardDataId: String!
+  categories: [String]
+  count: Int!
+  board: String!
+}
+
+type ImportDeckLine {
+  error: String
+  cardData: CardData
+  line: String!
+  set: String
+  count: Int
+}
+
+type CardEdge {
+  cardDataId: String! @ignore
+  cardData: CardData! @references(entity: "CardData", fieldName: "cardDataId")
+  board: String!
+  categories: [String!]!
+  count: Int! @default(numberValue: 1)
+}
+
+input DeckInput {
+  title: String!
+  cards: [CardEdgeInput]
+  sharingPolicy: String
+  categories: [String!]
+  description: String
+}
+
+type Deck @entity {
+  _id: String!
+  title: String!
+  description: String
+  avatarUrl: String! @default(stringValue: "")
+  sharingPolicy: DeckSharingPolicy!
+  categories: [String!]!
+  cards: [CardEdge]!
+  owner: User! @references(entity: "User", fieldName: "ownerId")
+  colors: [String]!
+  isEditable: Boolean! @ignore
+}
+
+type Query {
+  isLogin: Boolean!
+  currentUserName: String!
+
+  searchCardByName(name: String!): [CardData!]!
+  searchCard(query: String!): [CardData!]!
+  getCard(id: ID!): CardData
+  getRelatedCards(name: String!): [CardData]!
+
+  getDeck(deckId: ID!): Deck
+  getDecks(username: String): [Deck!]!
+  getMyDecks: [Deck!]!
+}
+type Mutation {
+  login(username: String!, password: String!): String!
+  signup(username: String!, password: String!): String!
+
+  refreshCardData(id: ID!): CardData
+
+  updateDeck(input: DeckInput!, deckId: ID): Deck
+  importDeck(input: String): [ImportDeckLine!]!
+}

@@ -7,8 +7,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "generate": "gql-gen",
-    "compile": "tsc plugin-visitor.ts"
+    "build": "tsc plugin-visitor.ts",
+    "start": "node ./plugin-visitor.js"
   },
   "devDependencies": {
     "@types/mongodb": "^3.1.22",
