@@ -1,8 +1,8 @@
 schema: input-schema.graphql
 overwrite: true
 generates:
-  ./output.ts:
-      - plugin.js:
+  ./output-visitor.ts:
+      - ./plugin-visitor.js:
         # Mongoose schema names
         schemaNameTemplate: "{{name}}Schema"
         # Typescript type names

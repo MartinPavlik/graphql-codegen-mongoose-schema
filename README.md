@@ -1,4 +1,40 @@
-# What you need to run the generated code
+# WIP
+
+## TODO
+- right now it just grabs `input-schema-mtg.graphql` and outputs `output.ts`, so also make this configurable
+- fix `Block-scoped variable 'CardDataImageUrisSchema' used before its declaration.` errors in the generated code by ordering the declarations (for example see `output.ts`)
+- create codegen plugin out of this
+- clean up this repo & improve build process
+- add documentation for the custom directives
+- fix TS errors
+
+## Schema requirements
+
+Add these definitions to your schema so you can use the directives
+
+```graphql
+  directive @references(
+    entity: String!,
+    fieldName: String
+  ) on FIELD_DEFINITION
+
+  directive @entity(
+    name: String
+  ) on OBJECT
+
+  directive @ignore on FIELD_DEFINITION
+  
+  directive @default(
+    numberValue: Float,
+    stringValue: String
+  ) on ENUM_VALUE | FIELD_DEFINITION
+
+  directive @private on FIELD_DEFINITION
+
+  directive @noSelect on FIELD_DEFINITION
+```
+
+## What you need to run the generated code
 
 Install dependencies
 ```
