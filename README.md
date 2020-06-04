@@ -1,8 +1,8 @@
 # WIP
 
 ## TODO
-- right now it just grabs `input-schema-mtg.graphql` and outputs `output.ts`, so also make this configurable
-- fix `Block-scoped variable 'CardDataImageUrisSchema' used before its declaration.` errors in the generated code by ordering the declarations (for example see `output.ts`)
+- right now it just grabs `input-schema-mtg.graphql` and outputs `output.ts`, so make this configurable
+- fix `Block-scoped variable 'XYZ' used before its declaration.` errors in the generated code by ordering the declarations (for example see `output.ts`)
 - create codegen plugin out of this
 - clean up this repo & improve build process
 - add documentation for the custom directives
