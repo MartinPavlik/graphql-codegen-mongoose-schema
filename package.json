@@ -25,6 +25,6 @@
     "graphql-codegen-schema-ast": "^0.18.0",
     "graphql-toolkit": "^0.5.16",
     "handlebars": "^4.1.0",
-    "mongoose": "^5.4.19"
+    "mongoose": "^5.7.5"
   }
 }
